@@ -1,6 +1,6 @@
 {
   "name": "analytics.js-integration-retention-science",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Analytics.js plugin for Retention Science.",
   "main": "index.js",
   "scripts": {
