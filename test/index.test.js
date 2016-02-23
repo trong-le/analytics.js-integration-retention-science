@@ -12,13 +12,11 @@ describe('RetentionScience', function() {
   };
 
   beforeEach(function() {
-    // window._rsq = [];
     analytics = new Analytics();
     retentionScience = new RetentionScience(options);
     analytics.use(RetentionScience);
     analytics.use(tester);
     analytics.add(retentionScience);
-    // retentionScience.ready();
   });
 
   afterEach(function() {
