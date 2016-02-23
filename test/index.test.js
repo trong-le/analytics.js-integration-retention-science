@@ -8,7 +8,7 @@ describe('RetentionScience', function() {
   var analytics;
   var retentionScience;
   var options = {
-    siteId: '123'
+    siteId: '12345'
   };
 
   beforeEach(function() {
@@ -68,7 +68,7 @@ describe('RetentionScience', function() {
       it('should add a page track', function() {
         analytics.page();
         // analytics.called(window._rsq.push, ['_track']);
-        analytics.equal(window._rsq.length, 4);
+        analytics.equal(window._rsq.length, 2);
       });
     });
 
@@ -81,13 +81,14 @@ describe('RetentionScience', function() {
 
       it('pushes viewed product', function() {
           analytics.track('Viewed Product', {});
-          analytics.equal(window._rsq.length, 5);
+          analytics.equal(window._rsq.length, 3);
       });
 
-      it('adds identity', function() {
+      it('adds defaults', function() {
           analytics.stub(window._rsq, 'push');
           analytics.identify('123', { email: 'schnie@astronomer.io' });
           analytics.track('Viewed Product', {});
+          analytics.called(window._rsq.push, ['_setSiteId', '12345']);
           analytics.called(window._rsq.push, ['_setUserId', '123']);
           analytics.called(window._rsq.push, ['_setUserEmail', 'schnie@astronomer.io']);
       });
