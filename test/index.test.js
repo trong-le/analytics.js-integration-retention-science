@@ -68,7 +68,7 @@ describe('RetentionScience', function() {
       it('should add a page track', function() {
         analytics.page();
         // analytics.called(window._rsq.push, ['_track']);
-        analytics.equal(window._rsq.length, 2);
+        analytics.equal(window._rsq.length, 4);
       });
     });
 
