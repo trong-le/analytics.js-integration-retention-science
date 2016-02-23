@@ -61,14 +61,13 @@ describe('RetentionScience', function() {
     beforeEach(function(done) {
       analytics.once('ready', done);
       analytics.initialize();
-      // analytics.stub(window._rsq, 'push');
+      analytics.stub(window._rsq, 'push');
     });
 
     describe('#page', function() {
       it('should add a page track', function() {
         analytics.page();
-        // analytics.called(window._rsq.push, ['_track']);
-        analytics.equal(window._rsq.length, 2);
+        analytics.called(window._rsq.push, ['_track']);
       });
     });
 
@@ -80,17 +79,20 @@ describe('RetentionScience', function() {
       });
 
       it('pushes viewed product', function() {
-          analytics.track('Viewed Product', {});
-          analytics.equal(window._rsq.length, 3);
+        analytics.track('Viewed Product', { sku: 'xxxxx' });
+        analytics.called(window._rsq.push, ['_addItem', {
+          id: 'xxxxx',
+          name: '',
+          price: ''
+        }]);
       });
 
       it('adds defaults', function() {
-          analytics.stub(window._rsq, 'push');
-          analytics.identify('123', { email: 'schnie@astronomer.io' });
-          analytics.track('Viewed Product', {});
-          analytics.called(window._rsq.push, ['_setSiteId', '12345']);
-          analytics.called(window._rsq.push, ['_setUserId', '123']);
-          analytics.called(window._rsq.push, ['_setUserEmail', 'schnie@astronomer.io']);
+        analytics.identify('123', { email: 'schnie@astronomer.io' });
+        analytics.track('Viewed Product', {});
+        analytics.called(window._rsq.push, ['_setSiteId', '12345']);
+        analytics.called(window._rsq.push, ['_setUserId', '123']);
+        analytics.called(window._rsq.push, ['_setUserEmail', 'schnie@astronomer.io']);
       });
 
       it('calls completed order', function() {
@@ -99,16 +101,29 @@ describe('RetentionScience', function() {
         analytics.called(retentionScience.completedOrder);
       });
 
-      // it('pushes completed order', function() {
-      //   analytics.track('Completed Order', {
-      //     products: [{
-      //       id: 123
-      //     }, {
-      //       sku: 456
-      //     }]
-      //   });
-      //   console.log(window._rsq);
-      // });
+      it('pushes completed order', function() {
+        analytics.track('Completed Order', {
+          products: [{
+            id: '123',
+            name: 'product1',
+            price: 50.00
+          }, {
+            sku: '456',
+            name: 'product2',
+            price: 100.00
+          }]
+        });
+        analytics.called(window._rsq.push, ['_addItem', {
+          id: '123',
+          name: 'product1',
+          price: 50.00
+        }]);
+        analytics.called(window._rsq.push, ['_addItem', {
+          id: '456',
+          name: 'product2',
+          price: 100.00
+        }]);
+      });
     });
   });
 });
