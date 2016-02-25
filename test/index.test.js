@@ -105,6 +105,8 @@ describe('RetentionScience', function() {
 
       it('pushes completed order', function() {
         analytics.track('Completed Order', {
+          id: 'xxxxx-xxxxx',
+          revenue: 150.00,
           products: [{
             id: '123',
             name: 'product1',
@@ -115,15 +117,19 @@ describe('RetentionScience', function() {
             price: 100.00
           }]
         });
+        analytics.called(window._rsq.push, ['_setSiteId', '12345']);
+        analytics.called(window._rsq.push, ['_setUserId', '']);
+        analytics.called(window._rsq.push, ['_setUserEmail', '']);
+        analytics.called(window._rsq.push, ['_addOrder', { id: 'xxxxx-xxxxx', total: '150' }]);
         analytics.called(window._rsq.push, ['_addItem', {
           id: '123',
           name: 'product1',
-          price: 50.00
+          price: '50'
         }]);
         analytics.called(window._rsq.push, ['_addItem', {
           id: '456',
           name: 'product2',
-          price: 100.00
+          price: '100'
         }]);
       });
     });
