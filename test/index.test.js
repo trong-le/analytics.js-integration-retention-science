@@ -80,6 +80,8 @@ describe('RetentionScience', function() {
 
       it('pushes viewed product', function() {
         analytics.track('Viewed Product', { sku: 'xxxxx' });
+        analytics.called(window._rsq.push, ['_setUserId', '']);
+        analytics.called(window._rsq.push, ['_setUserEmail', '']);
         analytics.called(window._rsq.push, ['_addItem', {
           id: 'xxxxx',
           name: '',
@@ -88,7 +90,7 @@ describe('RetentionScience', function() {
       });
 
       it('adds defaults', function() {
-        analytics.identify('123', { email: 'schnie@astronomer.io' });
+        analytics.identify(123, { email: 'schnie@astronomer.io' });
         analytics.track('Viewed Product', {});
         analytics.called(window._rsq.push, ['_setSiteId', '12345']);
         analytics.called(window._rsq.push, ['_setUserId', '123']);
