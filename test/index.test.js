@@ -103,6 +103,12 @@ describe('RetentionScience', function() {
         analytics.called(retentionScience.completedOrder);
       });
 
+      it('calls added product', function() {
+        analytics.stub(retentionScience, 'addedProduct');
+        analytics.track('Added Product', {});
+        analytics.called(retentionScience.addedProduct);
+      });
+
       it('pushes completed order', function() {
         analytics.track('Completed Order', {
           id: 'xxxxx-xxxxx',
