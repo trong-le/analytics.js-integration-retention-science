@@ -8,7 +8,8 @@ describe('RetentionScience', function() {
   var analytics;
   var retentionScience;
   var options = {
-    siteId: '12345'
+    siteId: '12345',
+    customMappings: [{key: 'Bid on Item', value: 'shopping_cart'}]
   };
 
   beforeEach(function() {
@@ -27,8 +28,8 @@ describe('RetentionScience', function() {
   });
 
   it('should have the right settings', function() {
-      analytics.compare(RetentionScience, integration('Retention Science')
-        .global('_rsq'));
+    analytics.compare(RetentionScience, integration('Retention Science')
+      .global('_rsq'));
   });
 
   describe('before loading', function() {
@@ -109,6 +110,11 @@ describe('RetentionScience', function() {
         analytics.called(retentionScience.addedProduct);
       });
 
+      it('calls custom mappings', function () {
+        analytics.track('Bid on Item', {});
+        analytics.called(window._rsq.push, ['_setAction', 'shopping_cart']);
+      });
+
       it('pushes completed order', function() {
         analytics.track('Completed Order', {
           id: 'xxxxx-xxxxx',
@@ -139,5 +145,5 @@ describe('RetentionScience', function() {
         }]);
       });
     });
-  });
+});
 });
